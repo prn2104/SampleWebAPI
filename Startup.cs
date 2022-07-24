@@ -11,6 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using SampleWebAPI.Models;
+using SampleWebAPI.Repository;
+
+
+using Microsoft.EntityFrameworkCore;
 
 namespace SampleWebAPI
 {
@@ -26,7 +31,8 @@ namespace SampleWebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<EmployeeContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:EmployeeDB"]));
+            services.AddScoped<IEmployeeRepository<Employee>, EmployeeRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
